@@ -17,7 +17,6 @@ export default class Vm {
   ip = 0;
   memory = new Uint16Array(MAX_VALUE);
   stack: number[] = [];
-  // executedInstructions: string[] = [];
 
   operationsMap = {
     [Operation.Halt]: this.halt,
@@ -58,8 +57,6 @@ export default class Vm {
     while (!this.isHalted && !this.isProgramFinished) {
       await this.executeOperation();
     }
-
-    // console.log(`\n\n\n\n${this.executedInstructions.join('\n')}`);
   }
 
   async executeOperation() {
@@ -67,10 +64,6 @@ export default class Vm {
     if (!(operation in this.operationsMap)) {
       throw new Error(`Unknown operation = ${operation}`);
     }
-
-    // const func = this.operationsMap[operation as Operation];
-
-    // this.executedInstructions.push(`#${this.ip} ${func.name}`);
 
     await this.operationsMap[operation as Operation].bind(this)();
   }
@@ -98,13 +91,7 @@ export default class Vm {
 
   fetchValue() {
     const value = this.fetchInstruction();
-    // this.executedInstructions[
-    //   this.executedInstructions.length - 1
-    // ] += ` ${value}`;
     if (value >= REGISTER_START_ADDRESS) {
-      // this.executedInstructions[
-      //   this.executedInstructions.length - 1
-      // ] += ` (${this.memory[value]})`;
       return this.memory[value];
     }
 
@@ -116,10 +103,6 @@ export default class Vm {
     if (value < REGISTER_START_ADDRESS) {
       throw new Error(`Argument = ${value} is not a register`);
     }
-
-    // this.executedInstructions[
-    //   this.executedInstructions.length - 1
-    // ] += ` ${value}`;
 
     return value;
   }

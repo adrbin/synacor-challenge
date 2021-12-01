@@ -30,15 +30,6 @@ async function main() {
         const stateFile = await (0, promises_1.readFile)(argv.state, 'utf8');
         state = JSON.parse(stateFile);
     }
-    // const arrayBuffer = new ArrayBuffer(12);
-    // const dataView = new DataView(arrayBuffer);
-    // dataView.setUint16(0, 9, true);
-    // dataView.setUint16(2, 32768, true);
-    // dataView.setUint16(4, 32769, true);
-    // dataView.setUint16(6, 4, true);
-    // dataView.setUint16(8, 19, true);
-    // dataView.setUint16(10, 32768, true);
-    // const program = Buffer.from(arrayBuffer);
     const vm = new vm_js_1.default(program, state);
     await vm.run();
 }

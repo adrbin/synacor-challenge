@@ -12,7 +12,6 @@ class Vm {
         this.ip = 0;
         this.memory = new Uint16Array(MAX_VALUE);
         this.stack = [];
-        // executedInstructions: string[] = [];
         this.operationsMap = {
             [operations_js_1.Operation.Halt]: this.halt,
             [operations_js_1.Operation.Set]: this.set,
@@ -49,15 +48,12 @@ class Vm {
         while (!this.isHalted && !this.isProgramFinished) {
             await this.executeOperation();
         }
-        // console.log(`\n\n\n\n${this.executedInstructions.join('\n')}`);
     }
     async executeOperation() {
         const operation = this.fetchInstruction();
         if (!(operation in this.operationsMap)) {
             throw new Error(`Unknown operation = ${operation}`);
         }
-        // const func = this.operationsMap[operation as Operation];
-        // this.executedInstructions.push(`#${this.ip} ${func.name}`);
         await this.operationsMap[operation].bind(this)();
     }
     get ipByte() {
@@ -78,13 +74,7 @@ class Vm {
     }
     fetchValue() {
         const value = this.fetchInstruction();
-        // this.executedInstructions[
-        //   this.executedInstructions.length - 1
-        // ] += ` ${value}`;
         if (value >= REGISTER_START_ADDRESS) {
-            // this.executedInstructions[
-            //   this.executedInstructions.length - 1
-            // ] += ` (${this.memory[value]})`;
             return this.memory[value];
         }
         return value;
@@ -94,9 +84,6 @@ class Vm {
         if (value < REGISTER_START_ADDRESS) {
             throw new Error(`Argument = ${value} is not a register`);
         }
-        // this.executedInstructions[
-        //   this.executedInstructions.length - 1
-        // ] += ` ${value}`;
         return value;
     }
     halt() {
